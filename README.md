@@ -1,7 +1,7 @@
 # Canvas Sketch Project: Connected bouncing dots
 This project is a simple simulation of moving agents on a canvas. It uses the canvas-sketch library for the sketching environment.
 
-[See it live](https://your-website.com/your-project)
+[See it live](https://codesandbox.io/s/bouncing-dots-zjy8s7?file=/src/index.js)
 
 ## Installation
 Before running the project, you need to install the necessary dependencies. Run the following command in your terminal:
