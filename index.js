@@ -8,41 +8,65 @@ const settings = {
 	animate: true
 };
 
-const animate = () => {
-	console.log('domestika');
-	requestAnimationFrame(animate);
-};
-// animate();
-
 const sketch = ({ context, width, height }) => {
 	const agents = [];
 
+    // creating 40 agents (dots)
 	for (let i = 0; i < 40; i++) {
 		const x = random.range(0, width);
 		const y = random.range(0, height);
-
 		agents.push(new Agent(x, y));
 	}
 
 	return ({ context, width, height }) => {
-		context.fillStyle = 'white';
+        context.fillStyle = 'black';
 		context.fillRect(0, 0, width, height);
+        context.strokeStyle = 'white'; 
+
+	    // connecting the dots with lines
+        for(let i = 0; i < agents.length; i++) {
+        const agent = agents[i];
+            
+            for(let j = i + 1; j < agents.length; j++){
+                const other = agents[j];
+
+                //connecting the dots that are close to each other
+                const dist = agent.pos.getDistance(other.pos);
+
+                if(dist > 200) continue; 
+            
+                context.lineWidth = math.mapRange(dist, 0, 200,12, 1); 
+                context.beginPath();
+                context.moveTo(agent.pos.x, agent.pos.y);
+                context.lineTo(other.pos.x, other.pos.y);
+                context.stroke();
+            }
+        }
 
 		agents.forEach(agent => {
 			agent.update();
 			agent.draw(context);
 			agent.bounce(width, height);
 		});
-	};
+
+    };
 };
 
 canvasSketch(sketch, settings);
 
 class Vector {
+    // position and velocity of the agents
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
 	}
+
+    // distance between two agents
+    getDistance(v) { 
+        const dx = this.x - v.x;
+        const dy = this.y - v.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
 }
 
 class Agent {
@@ -57,7 +81,6 @@ class Agent {
 		if (this.pos.y <= 0 || this.pos.y >= height) this.vel.y *= -1;
 	} 
 
-  // to use the velocity we need to add it to the position
 	update() {
 		this.pos.x += this.vel.x;
 		this.pos.y += this.vel.y;
@@ -66,14 +89,11 @@ class Agent {
 	draw(context) {
 		context.save();
 		context.translate(this.pos.x, this.pos.y);
-
 		context.lineWidth = 4;
-
 		context.beginPath();
 		context.arc(0, 0, this.radius, 0, Math.PI * 2);
 		context.fill();
 		context.stroke();
-
 		context.restore();
 	}
-} 
+}
