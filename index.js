@@ -1,17 +1,16 @@
-
 const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
 const math = require('canvas-sketch-util/math');
 
 const settings = {
-	dimensions: [ 1080, 1080 ],
+	dimensions: [1080, 1080],
 	animate: true
 };
 
 const sketch = ({ context, width, height }) => {
 	const agents = [];
 
-    // creating 40 agents (dots)
+	// creating 40 agents (dots)
 	for (let i = 0; i < 40; i++) {
 		const x = random.range(0, width);
 		const y = random.range(0, height);
@@ -19,29 +18,29 @@ const sketch = ({ context, width, height }) => {
 	}
 
 	return ({ context, width, height }) => {
-        context.fillStyle = 'black';
+		context.fillStyle = 'black';
 		context.fillRect(0, 0, width, height);
-        context.strokeStyle = 'white'; 
+		context.strokeStyle = 'white';
 
-	    // connecting the dots with lines
-        for(let i = 0; i < agents.length; i++) {
-        const agent = agents[i];
-            
-            for(let j = i + 1; j < agents.length; j++){
-                const other = agents[j];
+		// connecting the dots with lines
+		for (let i = 0; i < agents.length; i++) {
+			const agent = agents[i];
 
-                //connecting the dots that are close to each other
-                const dist = agent.pos.getDistance(other.pos);
+			for (let j = i + 1; j < agents.length; j++) {
+				const other = agents[j];
 
-                if(dist > 200) continue; 
-            
-                context.lineWidth = math.mapRange(dist, 0, 200,12, 1); 
-                context.beginPath();
-                context.moveTo(agent.pos.x, agent.pos.y);
-                context.lineTo(other.pos.x, other.pos.y);
-                context.stroke();
-            }
-        }
+				//connecting the dots that are close to each other
+				const dist = agent.pos.getDistance(other.pos);
+
+				if (dist > 200) continue;
+
+				context.lineWidth = math.mapRange(dist, 0, 200, 12, 1);
+				context.beginPath();
+				context.moveTo(agent.pos.x, agent.pos.y);
+				context.lineTo(other.pos.x, other.pos.y);
+				context.stroke();
+			}
+		}
 
 		agents.forEach(agent => {
 			agent.update();
@@ -49,24 +48,24 @@ const sketch = ({ context, width, height }) => {
 			agent.bounce(width, height);
 		});
 
-    };
+	};
 };
 
 canvasSketch(sketch, settings);
 
 class Vector {
-    // position and velocity of the agents
+	// position and velocity of the agents
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
 	}
 
-    // distance between two agents
-    getDistance(v) { 
-        const dx = this.x - v.x;
-        const dy = this.y - v.y;
-        return Math.sqrt(dx * dx + dy * dy);
-    }
+	// distance between two agents
+	getDistance(v) {
+		const dx = this.x - v.x;
+		const dy = this.y - v.y;
+		return Math.sqrt(dx * dx + dy * dy);
+	}
 }
 
 class Agent {
@@ -77,9 +76,9 @@ class Agent {
 	}
 
 	bounce(width, height) {
-		if (this.pos.x <= 0 || this.pos.x >= width)  this.vel.x *= -1;
+		if (this.pos.x <= 0 || this.pos.x >= width) this.vel.x *= -1;
 		if (this.pos.y <= 0 || this.pos.y >= height) this.vel.y *= -1;
-	} 
+	}
 
 	update() {
 		this.pos.x += this.vel.x;
@@ -97,3 +96,5 @@ class Agent {
 		context.restore();
 	}
 }
+
+// npx canvas-sketch index.js --open
