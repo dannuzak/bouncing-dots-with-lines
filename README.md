@@ -3,10 +3,20 @@ This project is a simple simulation of moving agents on a canvas. It uses the ca
 
 [See it live](https://codesandbox.io/s/bouncing-dots-zjy8s7?file=/src/index.js)
 
+## Dependencies
+
+- canvas-sketch
+- canvas-sketch-util/random
+- canvas-sketch-util/math
+
 ## Installation
+
 Before running the project, you need to install the necessary dependencies. Run the following command in your terminal:
 
-### npm install
+```bash
+npm canvas-sketch canvas-sketch-util install
+
+```
 
 ## Running the Project
 To run the project, use the following command:
